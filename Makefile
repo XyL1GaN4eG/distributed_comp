@@ -2,16 +2,20 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2
 TARGET = main
 SRC = main.c
+BUILD_DIR = build
 
-all: $(TARGET)
+all: $(BUILD_DIR)/$(TARGET)
 
-$(TARGET): $(SRC)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
+$(BUILD_DIR)/$(TARGET): $(SRC) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $@ $<
 
-run: $(TARGET)
-	./$(TARGET)
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+run: $(BUILD_DIR)/$(TARGET)
+	./$(BUILD_DIR)/$(TARGET)
 
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BUILD_DIR)
 
 .PHONY: all run clean
